@@ -69,12 +69,12 @@ public class Main {
                 String var = query.substring(0,4);
                 int size = Integer.parseInt(query.substring(12, query.length() - 2));
                 malloc(var, size);
-            } else if(query.contains("free")) {
-                String var = query.substring(5, query.length() - 2);
-                free(var);
-            } else {
+            } else if(query.contains("print")) {
                 String var = query.substring(6, query.length() - 2);
                 sb.append(print(var)).append('\n');
+            } else {
+                String var = query.substring(5, query.length() - 2);
+                free(var);
             }
         }
         System.out.print(sb);
