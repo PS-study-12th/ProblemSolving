@@ -94,6 +94,7 @@ public class Main {
 			}
 		}
 		if(d != -1) {
+			map[s.row][s.col] = 0;
 			s.row += dr[d];
 			s.col += dc[d];
 		}
@@ -114,6 +115,7 @@ public class Main {
 		Santa s = santa[map[r][c]];
 		if(s == null) return;
 		int id = s.id;
+		map[s.row][s.col] = 0;
 		s.row += dr[d] * C;
 		s.col += dc[d] * C;
 		s.score += C;
@@ -131,6 +133,7 @@ public class Main {
 		int c = s.col;
 		if(rudolph.row != r || rudolph.col != c) return;
 		d = reverse[d];
+		map[s.row][s.col] = 0;
 		s.row += dr[d] * D;
 		s.col += dc[d] * D;
 		s.score += D;
@@ -147,6 +150,7 @@ public class Main {
 		int c = now.col;
 		if(map[r][c] == 0) return;
 		Santa next = santa[map[r][c]];
+		map[r][c] = 0;
 		next.row += dr[d];
 		next.col += dc[d];
 		if(isOutOfRange(next.row, next.col)) {
@@ -156,11 +160,6 @@ public class Main {
 		stos(next.id, d);
 	}
 	static void updateMap() {
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++) {
-				map[i][j] = 0;
-			}
-		}
 		for(int i = 1; i <= P; i++) {
 			Santa s = santa[i];
 			if(!s.isExist) continue;
@@ -216,7 +215,6 @@ public class Main {
 				d = moveS(j);
 				if(d != -1) stor(j, d);
 			}
-			updateMap();
 			updateStun();
 			if(hasNext()) {
 				updateNextScore();
