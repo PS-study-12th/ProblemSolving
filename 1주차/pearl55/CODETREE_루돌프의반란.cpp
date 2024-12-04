@@ -30,7 +30,7 @@ bool cmp(vector<int>& a, vector<int>& b) { // 산타 정렬
 }
 
 pii findSanta(pii a) { // 루돌프가 산타 target 찾기
-    vector<vector<int>> sList; // (idx, (dist, r, c)) 순으로 저장
+    vector<vector<int>> sList; // (dist, r, c) 순으로 저장
 
     for(int i=0; i<P; i++) {
         if(death[i] == -1) continue;
