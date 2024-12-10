@@ -8,12 +8,11 @@ public class Main {
 	static HashMap<Integer, Long> lazy;
 	static HashMap<Integer, Rabbit> map;
 	static PriorityQueue<Rabbit> movePQ;
-	static Queue<Rabbit> waitQ;
+	static HashSet<Integer> moved;
 	static Rabbit dummy;
 	static class Rabbit {
 		int pid, d, row, col, jump;
 		long score;
-		boolean isSelected;
 		
 		Rabbit(int pid, int d) {
 			this.pid = pid;
@@ -22,13 +21,12 @@ public class Main {
 			this.col = 1;
 			this.jump = 0;
 			this.score = 0;
-			this.isSelected = false;
 		}
 
 		@Override
 		public String toString() {
 			return "Rabbit [pid=" + pid + ", d=" + d + ", row=" + row + ", col=" + col + ", jump=" + jump + ", score="
-					+ score + ", isSelected=" + isSelected + "]";
+					+ score + "]";
 		}
 	}
 	static int comp1(Rabbit r1, Rabbit r2) {
@@ -58,7 +56,7 @@ public class Main {
 		lazy = new HashMap<>();
 		map = new HashMap<>();
 		movePQ = new PriorityQueue<>((r1, r2) -> comp1(r1, r2));
-		waitQ = new ArrayDeque<>();
+		moved = new HashSet<>();
 		dummy = new Rabbit(0, 0);
 		for(int i = 0; i < pid.length; i++) {
 			Rabbit r = new Rabbit(pid[i], d[i]);
@@ -72,22 +70,16 @@ public class Main {
 			setPos(r);
 			lazy.put(r.pid, lazy.getOrDefault(r.pid, 0L) + r.row + r.col);
 			movePQ.offer(r);
-			r.isSelected = true;
+			moved.add(r.pid);
 		}
 		Rabbit best = dummy;
-		while(!movePQ.isEmpty()) {
-			Rabbit r = movePQ.poll();
-			if(comp2(best, r) > 0 && r.isSelected) {
-				best = r;
+		for(int pid : moved) {
+			if(comp2(best, map.get(pid)) > 0) {
+				best = map.get(pid);
 			}
-			waitQ.offer(r);
 		}
 		best.score += S;
-		while(!waitQ.isEmpty()) {
-			Rabbit r = waitQ.poll();
-			r.isSelected = false;
-			movePQ.offer(r);
-		}
+		moved.clear();
 	}
 	static void update(int pid, int L) {
 		map.get(pid).d *= L;
