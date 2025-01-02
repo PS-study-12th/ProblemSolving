@@ -9,6 +9,7 @@ struct Folder {
 	set<Folder*> subfolders;  // 하위 폴더들
 	set<string> files;        // 파일들
 	string name;
+
 	Folder(string name) : name(name) {}
 };
 
@@ -31,6 +32,9 @@ void dfs(Folder* folder, set<string>& ans, int& cnt) {
 }
 
 int main() {
+    
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
 	// main 폴더 생성
 	Folder* mains = new Folder("main");
 	folderMap["main"] = mains;
@@ -49,11 +53,11 @@ int main() {
 			if (folderMap.find(p) == folderMap.end()) {
 				folderMap[p] = new Folder(p);
 			}
-
-			// 하위 폴더 생성
-			Folder* child = new Folder(f);
-			folderMap[f] = child;  // 하위 폴더 맵에 추가
-			folderMap[p]->subfolders.insert(child);  // 상위 폴더에 하위 폴더 추가
+            if (folderMap.find(f) == folderMap.end()) {
+				folderMap[f] = new Folder(f);
+			}
+		
+			folderMap[p]->subfolders.insert(folderMap[f]);  // 상위 폴더에 하위 폴더 추가
 		}
 
 		if (c == 0) {  // 파일
@@ -116,8 +120,9 @@ int main() {
 		stringstream ss(query);
 		string segment;
 		string current;
+		bool found = false;
+		//그냥 맨 마지막 폴더 넣기? 
 		
-		//맨 마지막 폴더 경로로 탐색
 		while (getline(ss, segment, '/')) {
 			// 해당 하위 폴더 찾기
 			current = segment;
