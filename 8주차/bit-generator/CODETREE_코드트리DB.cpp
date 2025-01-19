@@ -10,7 +10,7 @@ struct Node {
     int cnt;
 };
 
-constexpr size_t MAX_SIZE = 100000 * 30;
+constexpr size_t MAX_SIZE = 100'000 * 30;
 constexpr size_t MAX_VAL = 1'000'000'000;
 Node segtree[MAX_SIZE];
 int node_cnt = 1;
